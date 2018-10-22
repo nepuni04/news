@@ -4,7 +4,7 @@ import '../models/item_model.dart';
 import '../widgets/loading_container.dart';
 import 'dart:async';
 
-class NewsListTile extends StatelessWidget{
+class NewsListTile extends StatelessWidget {
   final int id;
   NewsListTile({this.id});
 
@@ -15,37 +15,40 @@ class NewsListTile extends StatelessWidget{
     return StreamBuilder(
       stream: bloc.items,
       builder: (context, AsyncSnapshot<Map<int, Future<ItemModel>>> snapshot) {
-        if(!snapshot.hasData) {
+        if (!snapshot.hasData) {
           return LoadingContainer();
         }
 
         return FutureBuilder(
           future: snapshot.data[id],
           builder: (context, AsyncSnapshot<ItemModel> snapshot) {
-            if(!snapshot.hasData) {
+            if (!snapshot.hasData) {
               return LoadingContainer();
             }
-            return buildItem(snapshot.data);
+            return buildItem(context, snapshot.data);
           },
         );
-      }
+      },
     );
   }
 
-  Widget buildItem(ItemModel item) {
+  Widget buildItem(BuildContext context, ItemModel item) {
     return Column(
       children: <Widget>[
         ListTile(
-            title: Text('${item.title}'),
-            subtitle: Text("${item.score} votes"),
-            trailing: Column(
-              children: <Widget>[
-                Icon(Icons.comment),
-                Text("${item.descendants}"),
-              ],
-            ),
+          onTap: () {
+            Navigator.pushNamed(context, '/${item.id}');
+          },
+          title: Text('${item.title}'),
+          subtitle: Text("${item.score} votes"),
+          trailing: Column(
+            children: <Widget>[
+              Icon(Icons.comment),
+              Text("${item.descendants}"),
+            ],
           ),
-          Divider(height: 8.0)
+        ),
+        Divider(height: 8.0),
       ],
     );
   }

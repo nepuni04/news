@@ -7,7 +7,6 @@ class NewsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StoriesBloc bloc = StoriesProvider.of(context);
-    bloc.fetchTopIds();
 
     return Scaffold(
       appBar: AppBar(title: Text("Top News")),
@@ -31,8 +30,6 @@ class NewsList extends StatelessWidget {
             itemBuilder: (context, int index) {
               int itemId = snapshot.data[index];
               bloc.fetchItem(itemId);
-              print("Item ID: $itemId");
-
               return NewsListTile(id: itemId); 
             },
           ),

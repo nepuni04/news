@@ -6,11 +6,11 @@ import 'dart:async';
 class StoriesBloc {
   final _repository = Repository();
   PublishSubject _topIds = PublishSubject<List<int>>();
-  PublishSubject _fetchItem = PublishSubject<int>();
+  PublishSubject _itemsFetcher = PublishSubject<int>();
   BehaviorSubject _itemsOutput = BehaviorSubject<Map<int, Future<ItemModel>>>();
 
   StoriesBloc() {
-    _fetchItem.stream.transform(_itemTransformer()).pipe(_itemsOutput);
+    _itemsFetcher.stream.transform(_itemTransformer()).pipe(_itemsOutput);
   }
 
   Observable<List<int>> get topIds => _topIds.stream;
@@ -21,9 +21,7 @@ class StoriesBloc {
     _topIds.sink.add(topIds);
   }  
 
-  fetchItem(int id) {
-    _fetchItem.sink.add(id);
-  }
+  Function(int) get fetchItem => _itemsFetcher.sink.add;
 
   _itemTransformer() {
     return ScanStreamTransformer(
@@ -40,7 +38,7 @@ class StoriesBloc {
 
   dispose() {
     _topIds.close();
-    _fetchItem.close();
+    _itemsFetcher.close();
     _itemsOutput.close();
   }
 }

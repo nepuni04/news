@@ -33,8 +33,8 @@ class Repository {
     return item;
   }
 
-  Future<List<int>> fetchTopIds() async {
-    return await sources[1].fetchTopIds();
+  Future<List<int>> fetchTopIds() {
+    return sources[1].fetchTopIds();
   }
 
   Future<dynamic> clearCache() async {
