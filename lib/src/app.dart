@@ -11,6 +11,9 @@ class App extends StatelessWidget {
       child: CommentsProvider(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: Colors.pink
+          ),
           title: "Hacker News",
           onGenerateRoute: _buildRoutes,
         ),
